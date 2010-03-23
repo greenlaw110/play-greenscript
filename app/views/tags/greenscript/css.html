@@ -1,0 +1,16 @@
+#{list items:_load, as:'name'}
+%{_sm.addCss(name, _media)}%
+#{/list}
+
+#{if (_output)}
+    #{if (_sm.minimize())}
+        %{def fn = play.modules.greenscript.utils.Minimizor.minimizeCss(_sm.getCssList(_media));}%
+        <link rel="stylesheet" type="text/css" media="${_media?:'screen'}" href="/public/gs/${fn}">
+    #{/if}
+    #{else}
+        #{list items:_sm.getCssList(_media), as:'name'}
+            <link rel="stylesheet" type="text/css" media="${_media?:'screen'}" href="/public/${_sm.cssDir()}/${name}.css">
+        #{/list}
+    #{/else}
+
+#{/if}

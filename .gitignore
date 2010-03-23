@@ -1,0 +1,6 @@
+dist
+*iml
+*iws
+*ipr
+tmp
+lib/play-greenscript.jar
