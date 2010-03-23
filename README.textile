@@ -7,7 +7,7 @@ h2. <a>Enable the GreenScript module for the application</a>
 In the **/conf/application.conf** file, enable the GreenScript module by adding this line:
 
 bc. # The greenscript module
-module.greenscript=${play.path}/modules/greenscript
+module.greenscript=${play.path}/modules/play-greenscript
 
 h2. <a>Using the GreenScript module</a>
 
