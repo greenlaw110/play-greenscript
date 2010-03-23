@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+%{
+docTitle = get('title') ?: 'GreenScript Demo Application'
+}%
+<html>
+    <head>
+        <title>${docTitle}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        #{greenscript.css sm:gsSM, load:['layout', 'color'], output:true/}
+        <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
+        #{greenscript.javascript sm:gsSM, loadMissing:true /}
+    </head>
+    <body>
+        <div id="header">
+            <h1>${docTitle}</h1>
+        </div>
+        
+        #{if flash.success}
+            <div class="success">
+                ${flash.success}
+            </div>
+        #{/if}
+        #{if flash.error || error}
+            <div class="error">
+                ${error ?: flash.error}
+            </div>
+        #{/if}
+        
+        <div id="content">
+            #{doLayout /}
+        </div>
+       
+        <div id="footer">
+            greenlaw110@gmail.com
+        </div>
+        
+    </body>
+</html>

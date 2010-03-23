@@ -1,0 +1,34 @@
+%{
+def missings = play.modules.greenscript.utils.DependencyManager.JS_DEP_MGR.comprehend(_load?:[]);
+_sm.addJsMissings(missings);
+}%
+
+#{if (_sm.minimize())}
+    #{list items:_load?:[], as:'name'}
+        %{_sm.addJsLoaded(name)}%
+    #{/list}
+    %{def fn = play.modules.greenscript.utils.Minimizor.minimizeJs(_load?:[]);}%
+    #{if (!fn.isEmpty())}
+        <script type="text/javascript" src="/public/gs/${fn}" charset="utf-8"></script>
+    #{/if}
+
+    #{if _loadMissing != null}
+        %{fn = play.modules.greenscript.utils.Minimizor.minimizeJs(_sm.getJsMissings());}%
+        #{if (!fn.isEmpty())}
+            <script type="text/javascript" src="/public/gs/${fn}" charset="utf-8"></script>
+        #{/if}
+    #{/if}
+#{/if}
+#{else}
+    #{list items:_load?:[], as:'name'}
+        #{if (_sm.addJsLoaded(name))}
+            <script type="text/javascript" src="/public/${_sm.jsDir()}/${name}.js" charset="utf-8"></script>
+        #{/if}
+    #{/list}
+    #{if _loadMissing != null}
+        #{list items:_sm.getJsMissings(), as:'name'}
+            <script type="text/javascript" src="/public/${_sm.jsDir()}/${name}.js" charset="utf-8"></script>
+        #{/list}
+    #{/if}
+#{/else}
+
