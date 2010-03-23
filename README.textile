@@ -15,7 +15,7 @@ h3. <a>Setup tags</a>
 
 In order to use GreenScript you need to copy tags folder from src/views folder to your views folder. This is a temporary solution. In the final version this step should be unnecessary
 
-h3. <a>Configure GreenScript<a>
+h3. <a>Configure GreenScript</a>
 
 Copy greenscript.conf from the samples/greenscript/conf to your conf folder. Edit the file to 
 # setup javascript dependencies and css file dependencies. Basically you set dependecies in this way <code>js.file1=file2,file3</code>, meaning javascript file1.js require file2.js and file3.js be loaded first. For css dependencies, you use <code>css.file1=file2 to require file2.css be loaded prior to file1.css. Check sample application greenscript.conf for detail
