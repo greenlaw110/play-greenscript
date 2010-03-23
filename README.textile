@@ -23,8 +23,8 @@ Copy greenscript.conf from the samples/greenscript/conf to your conf folder. Edi
 ## <code>gs.dir.js=javascripts</code>, configure your javascript dir in the public folder
 ## <code>gs.dir.css=stylesheets</code>, configure your css dir in the public folder
 ## <code>gs.minimize.enabled</code>, enable/disable minizing process. Note even minizing is disabled, the dependency management is still there.
-## <code>gs.nocache=false<code>, enable/disable cache on minizing. Disable cache enable you to refresh css or javascript updates without restart the server
-## <code>gs.compress=true<code>, enable/disable compressing on minizing. Disable compress help you debug your javascript using e.g. firebugs
+## <code>gs.nocache=false</code>, enable/disable cache on minizing. Disable cache enable you to refresh css or javascript updates without restart the server
+## <code>gs.compress=true</code>, enable/disable compressing on minizing. Disable compress help you debug your javascript using e.g. firebugs
 
 h3. <a>Using greenscript tags in your template</a>:
 
