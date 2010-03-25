@@ -9,7 +9,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-import controllers.SessionManager;
+import play.modules.greenscript.utils.SessionManager;
 
 import play.Logger;
 import play.Play;
