@@ -70,10 +70,9 @@ public class SessionManager {
 	    jsMissing_.removeAll(jsGlobalLoaded_);
 	}
 
-	public List getJsMissings() {
-	    Set<String> defSet = DependencyManager.JS_DEP_MGR.getDefaultSet();
-	    defSet.addAll(jsMissing_);
-		return DependencyManager.JS_DEP_MGR.comprehend(defSet);
+	public List<String> getJsMissings() {
+		List<String> ret = DependencyManager.JS_DEP_MGR.comprehend(jsMissing_, true);
+		return ret;
 	}
 
 	public boolean addCss(String name) {return addScreenCss(name);}
@@ -86,13 +85,12 @@ public class SessionManager {
 		return addCss(cssPrit_, name);
 	}
 
-	public List getCssList(String media) {
-		List l =  comprehend_(media);
-		if (l.size() == 0) throw new RuntimeException("no css list");
+	public List<String> getCssList(String media) {
+		List<String> l =  comprehend_(media);
 		return l;
 	}
 
-	private List comprehend_(String media){
+	private List<String> comprehend_(String media){
 		return "print".equalsIgnoreCase(media) ?
 				DependencyManager.CSS_DEP_MGR.comprehend(cssPrit_):
 				DependencyManager.CSS_DEP_MGR.comprehend(cssScrn_);

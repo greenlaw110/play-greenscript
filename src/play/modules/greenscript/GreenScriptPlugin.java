@@ -42,14 +42,14 @@ public class GreenScriptPlugin extends PlayPlugin {
 		Configuration cssConf = c.subset("css");
 		DependencyManager.configDependencies(jsConf, cssConf);
 		
-		minimize_ = c.getBoolean("gs.minimize.enabled", true);		
+		minimize_ = c.getBoolean("gs.minimize.enabled", true);
 		jsDir_ = c.getString("gs.dir.js", "js");
 		cssDir_ = c.getString("gs.dir.css", "css");
 		
 		boolean nocache = Play.mode == Mode.DEV && c.getBoolean("gs.nocache");
 		Minimizor.setNoCache(nocache);
 		
-		boolean compress = Play.mode == Mode.DEV && c.getBoolean("gs.compress");
+		boolean compress = Play.mode == Mode.PROD || c.getBoolean("gs.compress");
 		Minimizor.setCompress(compress);
 		Logger.trace("greenscript module initialized");
 	}

@@ -18,6 +18,31 @@ h3 {font-size: 150%;}
 h4 {font-size: 120%;}
 h4 {font-size: 100%;}
 
+dl, dt, dd {
+    position: relative;
+    float: left;
+}
+
+dl {
+    margin: 1em;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: .5em;
+}
+
+dt {
+    clear: left;
+    font-weight: bold;
+    text-align: right;
+    width: 6em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+dt:after {
+    content: ':'
+}
+
 p {margin: 2px 0 20px 0;}
 
 table {
@@ -93,6 +118,7 @@ div.error, div.success {
     width:auto;
     margin:0 auto;
     padding: 15px;
+    clear:both;
 }
 .actions li, .actions form {
     display:inline;

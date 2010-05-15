@@ -3,6 +3,10 @@ def missings = play.modules.greenscript.utils.DependencyManager.JS_DEP_MGR.compr
 _sm.addJsMissings(missings);
 }%
 
+#{list items:_require?:[], as:'name'}
+    %{_sm.addJsMissing(name)}%
+#{/list}
+
 #{if (_sm.minimize())}
     #{list items:_load?:[], as:'name'}
         %{_sm.addJsLoaded(name)}%
@@ -11,6 +15,7 @@ _sm.addJsMissings(missings);
     #{if (!fn.isEmpty())}
         <script type="text/javascript" src="/public/gs/${fn}" charset="utf-8"></script>
     #{/if}
+    %{_sm.clearLoaded()}%
 
     #{if _loadMissing != null}
         %{fn = play.modules.greenscript.utils.Minimizor.minimizeJs(_sm.getJsMissings());}%
@@ -25,6 +30,7 @@ _sm.addJsMissings(missings);
             <script type="text/javascript" src="/public/${_sm.jsDir()}/${name}.js" charset="utf-8"></script>
         #{/if}
     #{/list}
+    %{_sm.clearLoaded()}%
     #{if _loadMissing != null}
         #{list items:_sm.getJsMissings(), as:'name'}
             <script type="text/javascript" src="/public/${_sm.jsDir()}/${name}.js" charset="utf-8"></script>
