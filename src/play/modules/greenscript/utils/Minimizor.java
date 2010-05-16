@@ -137,28 +137,46 @@ public class Minimizor {
 		return cssPath_;
 	}
 
-	private static void compressJs_(String fn, Writer out) throws IOException {
-		Logger.debug("minizing... %1$s.js", fn);
-		File inFile = Play.getFile(getJsPath_() + fn + ".js");
-		BufferedReader in = new BufferedReader(new FileReader(inFile));
-		if (compress_) {
-			JavaScriptCompressor compressor = new JavaScriptCompressor(in, er_);
-			compressor.compress(out, -1, true, false, false, false);
-		} else {
-			String line = null; 
-			PrintWriter writer = new PrintWriter(out);
-			while ((line = in.readLine()) != null) {
-				writer.println(line);
-			}
+	private static void compressJs_(String fn, Writer out) {
+	    try {
+    		Logger.debug("minizing... %1$s.js", fn);
+    		File inFile = Play.getFile(getJsPath_() + fn + ".js");
+    		BufferedReader in = new BufferedReader(new FileReader(inFile));
+    		if (compress_) {
+    			try {
+        			JavaScriptCompressor compressor = new JavaScriptCompressor(in, er_);
+    			    compressor.compress(out, -1, true, false, false, false);
+    			} catch (Exception e) {
+    			    Logger.error("error minimizing javascript file %1$s", fn);
+    			    in = new BufferedReader(new FileReader(inFile)); // reopen the file
+    			    copyJs_(in, out, fn);
+    			}
+    		} else {
+    		    copyJs_(in, out, fn);
+    		}
+    	} catch (IOException e) {
+    	    Logger.error(e, "error processing javascript file file %1$s", fn);
+    	}
+	}
+	
+	private static void copyJs_(BufferedReader in, Writer out, String fn) throws IOException {
+		String line = null; 
+		PrintWriter writer = new PrintWriter(out);
+		while ((line = in.readLine()) != null) {
+			writer.println(line);
 		}
 	}
 
-	private static void compressCss_(String fn, Writer out) throws IOException {
-		Logger.debug("minizing... %1$s.css", fn);
-		File inFile = Play.getFile(getCssPath_() + fn + ".css");
-		Reader in = new BufferedReader(new FileReader(inFile));
-		CssCompressor compressor = new CssCompressor(in);
-		compressor.compress(out, -1);
+	private static void compressCss_(String fn, Writer out) {
+	    try {
+    		Logger.debug("minizing... %1$s.css", fn);
+    		File inFile = Play.getFile(getCssPath_() + fn + ".css");
+    		Reader in = new BufferedReader(new FileReader(inFile));
+    		CssCompressor compressor = new CssCompressor(in);
+    		compressor.compress(out, -1);
+    	} catch (IOException e) {
+    	    Logger.error(e, "error processing css file %1$s", fn);
+    	}
 	}
 
 	private static File tmpDir() {
