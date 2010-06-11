@@ -2,6 +2,16 @@ h1. GreenScript module
 
 The GreenScript module help you to manage javascript and CSS dependencies and do minimizing work in the same time.
 
+h2. What's New for v1.0
+
+* Bug fixes: 
+** dependency management fail while in 'dev' mode
+** <a href='http://github.com/greenlaw110/play-greenscript/issues#issue/1'>greenscript should use play configuration file</a>
+* Enhancements:
+** Tag simplified: 'sm:gsSM' parameter no longer needed for greenscript.css and greenscript.javascript tag
+** Simplified alias for greenscript.javascript tag: greenscript.js
+** Use 'import' to replace 'load'
+
 h2. <a>Enable the GreenScript module for the application</a>
 
 In the **/conf/application.conf** file, enable the GreenScript module by adding this line:
@@ -65,7 +75,7 @@ The following syntax can help you load javascript file:
 
 -bc. #{greenscript.javascript sm:gsSM, load:['pMask'] /}-
 +bc. #{greenscript.javascript import:['pMask'] load:['inplace']/}+ or
-+bc. #{greenscript.js import:['pMask'] load:['inplace']/}
++bc. #{greenscript.js import:['pMask'] load:['inplace']/}+
 
 The above statement loads pMask.js and inplace.js file and all their dependents into memory, say, prototype-event-extensions.js and prototype.js which is a dependent of prototype-event-extensions.js. However, only inplace.js will be output in here, others will be output with the following statement:
 

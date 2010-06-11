@@ -65,7 +65,7 @@ The following syntax can help you load javascript file:
 
 -bc. #{greenscript.javascript sm:gsSM, load:['pMask'] /}-
 +bc. #{greenscript.javascript import:['pMask'] load:['inplace']/}+ or
-+bc. #{greenscript.js import:['pMask'] load:['inplace']/}
++bc. #{greenscript.js import:['pMask'] load:['inplace']/}+
 
 The above statement loads pMask.js and inplace.js file and all their dependents into memory, say, prototype-event-extensions.js and prototype.js which is a dependent of prototype-event-extensions.js. However, only inplace.js will be output in here, others will be output with the following statement:
 
