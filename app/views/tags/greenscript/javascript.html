@@ -1,24 +1,33 @@
 %{
-def missings = play.modules.greenscript.utils.DependencyManager.JS_DEP_MGR.comprehend(_load?:[]);
-_sm.addJsMissings(missings);
+
+def caller = _caller
+while (caller._caller) caller = caller._caller
+def sm = caller.gsSM
+
+def a = _import
+if (!a) a = _require
+
+def missings = play.modules.greenscript.utils.DependencyManager.JS_DEP_MGR.comprehend(_load?:[])
+sm.addJsMissings(missings)
+
 }%
 
-#{list items:_require?:[], as:'name'}
-    %{_sm.addJsMissing(name)}%
+#{list items:a?:[], as:'name'}
+    %{sm.addJsMissing(name)}%
 #{/list}
 
-#{if (_sm.minimize())}
+#{if (sm.minimize())}
     #{list items:_load?:[], as:'name'}
-        %{_sm.addJsLoaded(name)}%
+        %{sm.addJsLoaded(name)}%
     #{/list}
     %{def fn = play.modules.greenscript.utils.Minimizor.minimizeJs(_load?:[]);}%
     #{if (!fn.isEmpty())}
         <script type="text/javascript" src="/public/gs/${fn}" charset="utf-8"></script>
     #{/if}
-    %{_sm.clearLoaded()}%
+    %{sm.clearLoaded()}%
 
     #{if _loadMissing != null}
-        %{fn = play.modules.greenscript.utils.Minimizor.minimizeJs(_sm.getJsMissings());}%
+        %{fn = play.modules.greenscript.utils.Minimizor.minimizeJs(sm.getJsMissings());}%
         #{if (!fn.isEmpty())}
             <script type="text/javascript" src="/public/gs/${fn}" charset="utf-8"></script>
         #{/if}
@@ -26,14 +35,14 @@ _sm.addJsMissings(missings);
 #{/if}
 #{else}
     #{list items:_load?:[], as:'name'}
-        #{if (_sm.addJsLoaded(name))}
-            <script type="text/javascript" src="/public/${_sm.jsDir()}/${name}.js" charset="utf-8"></script>
+        #{if (sm.addJsLoaded(name))}
+            <script type="text/javascript" src="/public/${sm.jsDir()}/${name}.js" charset="utf-8"></script>
         #{/if}
     #{/list}
-    %{_sm.clearLoaded()}%
+    %{sm.clearLoaded()}%
     #{if _loadMissing != null}
-        #{list items:_sm.getJsMissings(), as:'name'}
-            <script type="text/javascript" src="/public/${_sm.jsDir()}/${name}.js" charset="utf-8"></script>
+        #{list items:sm.getJsMissings(), as:'name'}
+            <script type="text/javascript" src="/public/${sm.jsDir()}/${name}.js" charset="utf-8"></script>
         #{/list}
     #{/if}
 #{/else}

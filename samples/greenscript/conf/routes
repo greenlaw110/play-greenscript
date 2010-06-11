@@ -10,5 +10,8 @@ POST    /post                                       Application.post
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
+# GreenScript
+GET /gs module:greenscript
+
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

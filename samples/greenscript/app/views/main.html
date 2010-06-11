@@ -6,9 +6,9 @@ docTitle = get('title') ?: 'GreenScript Demo Application'
     <head>
         <title>${docTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        #{greenscript.css sm:gsSM, load:['layout', 'color'], output:true/}
+        #{greenscript.css import:['layout', 'color'], output:true/}
         <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
-        #{greenscript.javascript sm:gsSM, loadMissing:true /}
+        #{greenscript.javascript loadMissing:true /}
     </head>
     <body>
         <div id="header">

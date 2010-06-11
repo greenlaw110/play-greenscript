@@ -1,15 +1,26 @@
-#{list items:_load, as:'name'}
-%{_sm.addCss(name, _media)}%
+%{
+    def a = _load
+    if (!a) {
+        a = _import
+    }
+
+    def caller = _caller
+    while (caller._caller) caller = caller._caller
+    def sm = caller.gsSM
+}%
+
+#{list items:a, as:'name'}
+%{sm.addCss(name, _media)}%
 #{/list}
 
 #{if (_output)}
-    #{if (_sm.minimize())}
-        %{def fn = play.modules.greenscript.utils.Minimizor.minimizeCss(_sm.getCssList(_media));}%
-        <link rel="stylesheet" type="text/css" media="${_media?:'screen'}" href="/public/gs/${fn}">
+    #{if (sm.minimize())}
+        %{def fn = play.modules.greenscript.utils.Minimizor.minimizeCss(sm.getCssList(_media));}%
+        <link rel="stylesheet" type="text/css" media="${_media?:'all'}" href="/public/gs/${fn}">
     #{/if}
     #{else}
-        #{list items:_sm.getCssList(_media), as:'name'}
-            <link rel="stylesheet" type="text/css" media="${_media?:'screen'}" href="/public/${_sm.cssDir()}/${name}.css">
+        #{list items:sm.getCssList(_media), as:'name'}
+            <link rel="stylesheet" type="text/css" media="${_media?:'all'}" href="/public/${sm.cssDir()}/${name}.css">
         #{/list}
     #{/else}
 #{/if}

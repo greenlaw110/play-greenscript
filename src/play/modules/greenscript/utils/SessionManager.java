@@ -15,7 +15,7 @@ public class SessionManager {
 
 	private Set<String> jsLoaded_ = new HashSet(); // store scripts which are loaded in this call
 	private Set<String> jsGlobalLoaded_ = new HashSet(); //store all scripts which has ever been loaded throughout the http session
-	private Set<String>	jsMissing_ = new HashSet(); // store scripts to be loaded
+	private Set<String> jsMissing_ = new HashSet(); // store scripts to be loaded
 	private List<String> cssScrn_ = new ArrayList();
 	private List<String> cssPrit_ = new ArrayList();
 

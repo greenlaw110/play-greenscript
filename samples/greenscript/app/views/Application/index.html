@@ -47,8 +47,8 @@ Add Customer
     </ul>
 </form>
 
-#{greenscript.css sm:gsSM, load: ['datepicker'] /}
-#{greenscript.javascript sm:gsSM, load:['datepicker'] /}
+#{greenscript.css import: ['datepicker'] /}
+#{greenscript.js import:['datepicker'] /}
 <script type="text/javascript">
     var rule = ruleById('first_name');
     rule.add(Validate.Presence)
