@@ -65,10 +65,10 @@ public class GreenScriptPlugin extends PlayPlugin {
 	else 
 	    Logger.info("GreenScript minimizing enabled");
 
-	boolean nocache = Play.mode == Mode.DEV && c.getBoolean("gs.nocache");
+	boolean nocache = Play.mode == Mode.DEV && c.getBoolean("gs.nocache", false);
 	Minimizor.setNoCache(nocache);
 
-	boolean compress = c.getBoolean("gs.compress");
+	boolean compress = c.getBoolean("gs.compress", true);
 	Minimizor.setCompress(compress);
     }
 
