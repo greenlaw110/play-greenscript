@@ -1,18 +1,15 @@
 package play.modules.greenscript.utils;
 
-import play.modules.greenscript.GreenScriptPlugin;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,24 +19,47 @@ import org.mozilla.javascript.EvaluatorException;
 
 import play.Logger;
 import play.Play;
-import play.Play.Mode;
 import play.exceptions.UnexpectedException;
+import play.modules.greenscript.GreenScriptPlugin;
 
 import com.yahoo.platform.yui.compressor.CssCompressor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 
 public class Minimizor {
-	private static Map<List<String>, String> jsBag_ = new HashMap();
-	private static Map<List<String>, String> cssBag_ = new HashMap();
-	private static boolean noCache_ = false;
+	private static Map<List<String>, String> jsBag_ = new HashMap<List<String>, String>();
+	private static Map<List<String>, String> cssBag_ = new HashMap<List<String>, String>();
+	private static boolean cache_ = true;
 	private static boolean compress_ = true;
+	private static String gsDir_ = "/public/gs/";
 	
-	public static void setNoCache(boolean noCache) {
-		noCache_ = noCache;
+	public static String gsDir() {
+	    return gsDir_;
 	}
 	
-	public static void setCompress(boolean compress){
+	public static void setGsDir(String gsDir) {
+	    if (gsDir.endsWith("/"))
+	        gsDir_ = gsDir;
+	    else
+	        gsDir_ = gsDir + "/";
+	}
+	
+	public static boolean getCacheSetting() {
+	    return cache_;
+	}
+	public static void setCacheSetting(boolean cache) {
+		cache_ = cache;
+	}
+	
+	public static boolean getCompressSetting() {
+	    return compress_;
+	}
+	public static void setCompressSetting(boolean compress){
 		compress_ = compress;
+	}
+	
+	public static String minimizeJs(String jsNames) {
+	    if (null == jsNames) return "";
+	    return minimizeJs(Arrays.asList(jsNames.split("[,;: ]")));
 	}
 
 	public static String minimizeJs(List<String> jsNames) {
@@ -47,13 +67,17 @@ public class Minimizor {
 		
 		String name = jsBag_.get(jsNames);
 		if (null != name) {
-			if (Play.mode == Mode.DEV) {
-				File f = Play.getFile("/public/gs/" + name);
-				if (!noCache_ && f.exists()) {
-					return name;
+			if (cache_) {
+				File f = Play.getFile(gsDir_ + name);
+				if (f.exists()) {
+				    return name;
+				} else {
+				    // cached file get removed some how
+				    jsBag_.remove(jsNames);
 				}
 			} else {
-				return name;
+			    // cache_ setting turned off at runtime
+				jsBag_.remove(jsNames);
 			}
 		}
 
@@ -78,21 +102,25 @@ public class Minimizor {
 			}
 		}
 
-		jsBag_.put(jsNames, fn);
+		if (cache_) jsBag_.put(jsNames, fn);
 		return fn;
 	}
 
 	public static String minimizeCss(List<String> cssNames) {
 		String name = cssBag_.get(cssNames);
 		if (null != name) {
-			if (Play.mode == Mode.DEV) {
-				File f = Play.getFile("/public/gs/" + name);
-				if (!noCache_ && f.exists()) {
-					return name;
-				}
-			} else {
-				return name;
-			}
+		    if (cache_) {
+    			File f = Play.getFile(gsDir_ + name);
+    			if (f.exists()) {
+    				return name;
+    			} else {
+    			    // cached file get removed somehow
+    			    cssBag_.remove(cssNames);
+    			}
+		    } else {
+		        // cache setting turned off at runtime
+		        cssBag_.remove(cssNames);
+		    }
 		}
 
 		File outFile = randomFile(".css");
@@ -116,25 +144,16 @@ public class Minimizor {
 			}
 		}
 
-		cssBag_.put(cssNames, fn);
+		if (cache_) cssBag_.put(cssNames, fn);
 		return fn;
 	}
 
-	private static String jsPath_ = null;
-	private static String cssPath_ = null;
-
 	private static String getJsPath_() {
-		if (null == jsPath_) {
-			jsPath_ = "/public/" + GreenScriptPlugin.getJsDir() + "/";
-		}
-		return jsPath_;
+		return GreenScriptPlugin.getJsDir();
 	}
 
 	private static String getCssPath_() {
-		if (null == cssPath_) {
-			cssPath_ = "/public/" + GreenScriptPlugin.getCssDir() + "/";
-		}
-		return cssPath_;
+		return GreenScriptPlugin.getCssDir();
 	}
 
 	private static void compressJs_(String fn, Writer out) {
@@ -180,7 +199,7 @@ public class Minimizor {
 	}
 
 	private static File tmpDir() {
-		File gsDir = Play.getFile("public/gs");
+		File gsDir = Play.getFile(gsDir_);
 		if (!gsDir.exists()) {
 		    gsDir.mkdir();
 		}

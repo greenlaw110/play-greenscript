@@ -6,9 +6,9 @@ docTitle = get('title') ?: 'GreenScript Demo Application'
     <head>
         <title>${docTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        #{greenscript.css import:['layout', 'color'], output:true/}
+        #{greenscript.css import:'layout color', output:true/}
         <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
-        #{greenscript.javascript loadMissing:true /}
+        #{greenscript.js loadMissing:true /}
     </head>
     <body>
         <div id="header">
@@ -32,6 +32,7 @@ docTitle = get('title') ?: 'GreenScript Demo Application'
        
         <div id="footer">
             greenlaw110@gmail.com
+            <a href="/gs/conf" target='_blank'> >> Config GreenScript</a>
         </div>
         
     </body>

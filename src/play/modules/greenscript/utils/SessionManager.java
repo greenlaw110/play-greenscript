@@ -1,23 +1,20 @@
 package play.modules.greenscript.utils;
 
-import play.modules.greenscript.utils.DependencyManager;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import play.mvc.Before;
-import play.mvc.Controller;
-
 public class SessionManager {
 
-	private Set<String> jsLoaded_ = new HashSet(); // store scripts which are loaded in this call
-	private Set<String> jsGlobalLoaded_ = new HashSet(); //store all scripts which has ever been loaded throughout the http session
-	private Set<String> jsMissing_ = new HashSet(); // store scripts to be loaded
-	private List<String> cssScrn_ = new ArrayList();
-	private List<String> cssPrit_ = new ArrayList();
+	private Set<String> jsLoaded_ = new HashSet<String>(); // store scripts which are loaded in this call
+	private Set<String> jsGlobalLoaded_ = new HashSet<String>(); //store all scripts which has ever been loaded throughout the http session
+	private Set<String> jsMissing_ = new HashSet<String>(); // store scripts to be loaded
+	private List<String> cssScrn_ = new ArrayList<String>();
+	private List<String> cssPrit_ = new ArrayList<String>();
 
 	private boolean minimize_ = false;
 	private String jsDir_ = "js";
@@ -33,27 +30,46 @@ public class SessionManager {
 	public String cssDir() {return cssDir_;};
 	public boolean minimize() {return minimize_;}
 
-	protected boolean addCss(List<String> list, String name) {
+	private boolean addToList_(List<String> list, String name) {
 		for (String s:list) {
 			if (s.equalsIgnoreCase(name)) return false;
 		}
 		list.add(name);
 		return true;
 	}
-
-	public boolean addCss(String name, String media) {
-		//throw new RuntimeException(String.format("name: %1$s, media: %2$s", name, media));
-		return ("print".equalsIgnoreCase(media)) ? addPrintCss(name) : addScreenCss(name);
+	
+	public void addCss(List<String> names) {
+	    addCss(names, null);
+	}
+	
+	public void addCss(List<String> names, String media) {
+        List<String> l = "print".equalsIgnoreCase(media) ? cssPrit_ : cssScrn_;
+	    
+        for (String nm: names) {
+            addToList_(l, nm);
+        }
 	}
 
-	public boolean addJsLoaded(String name) {
-	    //if (!jsGlobalLoaded_.add(name)) return false;
-	    jsGlobalLoaded_.add(name);
-		if(jsLoaded_.add(name)) {
-			jsMissing_.remove(name);
-			return true;
-		}
-		return false;
+    public void addCss(String name) {
+        addCss(name, null);
+    }
+
+	public void addCss(String name, String media) {
+	    if (null == name) return;
+	    addCss(Arrays.asList(name.split("[,;: ]")), media);
+	}
+
+	public void addJsLoaded(String name) {
+	    addJsLoaded(Arrays.asList(name.split("[,;: ]")));
+	}
+	
+	public void addJsLoaded(Collection<String> loaded) {
+	    for (String name: loaded) {
+	        jsGlobalLoaded_.add(name);
+	        if(jsLoaded_.add(name)) {
+	            jsMissing_.remove(name);
+	        }
+	    }
 	}
 	
 	public void clearLoaded() {
@@ -61,28 +77,19 @@ public class SessionManager {
 	}
 
 	public void addJsMissings(Collection<String> missings) {
+	    if (null == missings) return;
 		jsMissing_.addAll(missings);
 		jsMissing_.removeAll(jsGlobalLoaded_);
 	}
 	
-	public void addJsMissing(String name) {
-	    jsMissing_.add(name);
-	    jsMissing_.removeAll(jsGlobalLoaded_);
+	public void addJsMissings(String name) {
+	    if (null == name) return;
+	    addJsMissings(Arrays.asList(name.split("[,;: ]")));
 	}
 
 	public List<String> getJsMissings() {
 		List<String> ret = DependencyManager.JS_DEP_MGR.comprehend(jsMissing_, true);
 		return ret;
-	}
-
-	public boolean addCss(String name) {return addScreenCss(name);}
-
-	public boolean addScreenCss(String name){
-		return addCss(cssScrn_, name);
-	}
-
-	public boolean addPrintCss(String name){
-		return addCss(cssPrit_, name);
 	}
 
 	public List<String> getCssList(String media) {
@@ -91,8 +98,21 @@ public class SessionManager {
 	}
 
 	private List<String> comprehend_(String media){
-		return "print".equalsIgnoreCase(media) ?
-				DependencyManager.CSS_DEP_MGR.comprehend(cssPrit_):
-				DependencyManager.CSS_DEP_MGR.comprehend(cssScrn_);
+	    return DependencyManager.CSS_DEP_MGR.comprehend("print".equalsIgnoreCase(media) ? cssPrit_ : cssScrn_);
+	}
+	
+	// -- helper functions --
+	
+	@SuppressWarnings("unchecked")
+    public Collection<String> asList(Object o) {
+	    if (null == o) return Collections.emptyList();
+	    if (o instanceof Collection) {
+	        return (Collection<String>)o;
+	    }
+	    return Arrays.asList(o.toString().split("[,;: ]"));
+	}
+	
+	public String gsDir() {
+	    return Minimizor.gsDir();
 	}
 }

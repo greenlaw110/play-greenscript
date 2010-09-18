@@ -1,9 +1,9 @@
 #{extends 'main.html' /}
-#{greenscript.css import:['form', 'livevalidation'] /}
+#{css 'form livevalidation' /}
 
 <h2>#{get 'formTitle' /}</h2>
 
-#{greenscript.js import:['livevalidation'] /}
+#{js import:'livevalidation' /}
 <script type="text/javascript">
 var rules = new Hash();
 var ruleById = function (id) {
@@ -19,7 +19,7 @@ var ruleById = function (id) {
 
 #{doLayout/}
 
-#{greenscript.js import:['pMask'] /}
+#{js 'pMask' /}
 <script type="text/javascript">
     new pMask();
 </script>

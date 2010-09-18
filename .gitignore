@@ -4,4 +4,6 @@ dist
 *ipr
 tmp
 lib/play-greenscript.jar
-samples/greenscript/public/gs
+samples-and-tests/demo/public/gs
+samples-and-tests/demo/tmp
+samples-and-tests/demo/test-result

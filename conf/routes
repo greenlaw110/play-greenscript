@@ -5,5 +5,12 @@
 #
 # ~~~~
 
-GET /conf/? greenscript.Configurator.get
-PUT /conf greenscript.Configurator.update
+GET /? greenscript.Configurator.configure
+GET /conf greenscript.Configurator.configure
+GET /configure greenscript.Configurator.configure
+GET /setting greenscript.Configurator.configure
+PUT / greenscript.Configurator.update
+
+GET /js/ staticDir:public/javascripts
+GET /css/ staticDir:public/stylesheets
+
