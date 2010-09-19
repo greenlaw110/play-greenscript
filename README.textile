@@ -61,9 +61,9 @@ bc. greenscript.url.js=/js
 greenscript.url.css=/css
 greenscript.url.minimized=/gs
 
-p. Note that js and css url is used only when greenscript.miminize set to false, in which case, GreenScript will output links refer the original javascript/css files.
+p. Note that js and css url is used only when <code>greenscript.miminize</code> set to false, in which case, GreenScript will output links refer the original javascript/css files.
 
-p. greenscript.url.minimized setting is used only when greenscript.minimize set to true, in which case, GreenScript will output links refer to the compressed(minimized) files
+p. <code>greenscript.url.minimized</code> setting is used only when <code>greenscript.minimize</code> set to true, in which case, GreenScript will output links refer to the compressed(minimized) files
 
 h4. <a>Minimize Settings</a>
 
@@ -99,14 +99,14 @@ greenscript.cache=false
 
 h2. <a>Configure javascript/css dependencies</a>
 
-p. Javascript/css dependencies are documented in a separate configuration file named "greenscript.conf", which should be put into the conf dir (the same place with your application.conf)
+p. Javascript/css dependencies are documented in a separate configuration file named <code>greenscript.conf</code>, which should be put into the conf dir (the same place with your application.conf)
 
 p. It's fairly straght forward to document the file dependencies. Let's say your have four javascript files a.js, b.js, c.js and d.js, the dependency relationship is b.js depends on a.js, c.js depends on both b.js and d.js, then here is the content of your <code>greenscript.conf</code> file:
 
 bc. js.b=a
 js.c=b,d
 
-p. The same way applies to css file dependencies. The only difference is css dependancy rule starts with "css." while javascript file rule starts with "js.". Below is the content of <code>greenscript.conf</code> file of the demo application:
+p. The same way applies to css file dependencies. The only difference is css dependancy rule starts with <code>css.</code> while javascript file rule starts with <code>js.</code>. Below is the content of <code>greenscript.conf</code> file of the demo application:
 
 bc. # js.default means the file get loaded always, even no other file depends on it
 js.default=prototype
@@ -147,15 +147,15 @@ bc. #{greenscript.css "main", output:true/}
 p. Yes! that's it. I know you might have some questions, don't worry. Let me unveil the curtain.
 
 * Where is my "jquery-1.4.2.min.js" ?
-** When you put "loadAll: true" in #{greenscript.js} tag, it will output all unloaded js dependency files as well as the default js file you've defined in <code>greenscript.conf</code>. I am sure jquery-1.4.2.min.js will be reached by either of the 2 lookup paths, otherwise, I assume you will not need that file. For perfectionist, here is how to load the file anyway: <code>#{greenscript.js "jquery-1.4.2.min.js", output: true/}</code>
+** When you put <code>loadAll: true</code> in <code>#{greenscript.js}</code> tag, it will output all unloaded js dependency files as well as the default js file you've defined in <code>greenscript.conf</code>. I am sure <code>jquery-1.4.2.min.js</code> will be reached by either of the 2 lookup paths, otherwise, I assume you will not need that file. For perfectionist, here is how to load the file anyway: <code>#{greenscript.js "jquery-1.4.2.min.js", output: true/}</code>
 * How can I get "moreStyles" and "moreScripts"?
-** You get them automatically when you have "output: true" for #{greenscript.css} or "loadAll: true" for #{greenscript.js}. The assumption is you have told GreenScript that you need them in other places. I will let you know how to do that later at next section.
-* Why do you use "output" for css while "loadAll" for js? 
+** You get them automatically when you have <code>output: true</code> for <code>#{greenscript.css}</code> or <code>loadAll: true</code> for <code>#{greenscript.js}</code>. The assumption is you have told GreenScript that you need them in other places. I will let you know how to do that later at next section.
+* Why do you use <code>output</code> for css while <code>loadAll</code> for js? 
 ** Please don't ask this question now, there are subtile reasons which I would like to discuss with you once you are an expert level GreenScript user.
 
 h4. <a>Other templates</a>
 
-p. The differences of using GreenScript tag in other templates and in the "main.html" is that ususally you don't "output" javascript or css files in your other templates, instead, you declare them (for the template usage). Here is a sample (found in ${play.path}/samples-and-tests/booking/app/views/Hotels/book.html) of how to declare javascripts and css when you don't have GreenScript:
+p. The differences of using GreenScript tag in other templates and in the <code>main.html</code> is that ususally you don't "output" javascript or css files in your other templates, instead, you declare them (for the template usage). Here is a sample (found in <code>${play.path}/samples-and-tests/booking/app/views/Hotels/book.html</code>) of how to declare javascripts and css when you don't have GreenScript:
 
 bc. #{set 'moreScripts'}
     <script src="@{'/public/javascripts/jquery-ui-1.7.2.custom.min.js'}" type="text/javascript" charset="utf-8"></script>
@@ -238,16 +238,19 @@ In conclusion, GreenScript is a flexible and powerful javascript/css management 
 
 h2. <a>FAQ</a>
 
-p. I found there is no javascript and css links at all in my html file rendered out!!
-* Make sure you have add the following lines in your main.html (or in any other name) template:
+h3. I found there is no javascript and css links at all in my html file rendered out!!
+
+Make sure you have add the following lines in your main.html (or in any other name) template:
 
 bc. #{greenscript.css "css files separated by blank", output:true/}
 #{greenscript.js loadAll:true/}
 
-p. Do I need to surround #{greenscript } tag with #{set 'moreStyles'} in my other templates?
+h3. Do I need to surround #{greenscript } tag with #{set 'moreStyles'} in my other templates?
+
 ** No, you just use #{greenscript.css '...' /} to declare your css files. With greenscript, you can say 'byebye' to 'moreStyles' and 'moreScripts'.
 
-p. How to use GreenScript? Is it hard to configure?
+h3. How to use GreenScript? Is it hard to configure?
+
 ** You can use GreenScript with zero configuration. However, it's suggested to create "greenscript.conf" file to describe your javascript and css file dependancies. You will love this feature because you just need to declare explicitly used javascript/css files in your templates, leave the dependencies to GreenScript.
 
 * I want to debug javascript, can GreenScript output uncompressed version of javascript/css files?
