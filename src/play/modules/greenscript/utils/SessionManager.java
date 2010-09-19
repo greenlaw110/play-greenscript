@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import play.modules.greenscript.GreenScriptPlugin;
+
 public class SessionManager {
 
 	private Set<String> jsLoaded_ = new HashSet<String>(); // store scripts which are loaded in this call
@@ -16,18 +18,28 @@ public class SessionManager {
 	private List<String> cssScrn_ = new ArrayList<String>();
 	private List<String> cssPrit_ = new ArrayList<String>();
 
-	private boolean minimize_ = false;
-	private String jsDir_ = "js";
-	private String cssDir_ = "css";
+	private final boolean minimize_;
+	private final String jsUrl_;
+	private final String cssUrl_;
 
-	public SessionManager(String jsDir, String cssDir, boolean minimize) {
-		jsDir_ = jsDir;
-		cssDir_ = cssDir;
+	public SessionManager(String jsUrl, String cssUrl, boolean minimize) {
+		jsUrl_ = jsUrl;
+		cssUrl_ = cssUrl;
 		minimize_ = minimize;
 	}
 
-	public String jsDir() {return jsDir_;}
-	public String cssDir() {return cssDir_;};
+	public String jsUrl() {return jsUrl_;}
+	public String jsUrl(String fn) {
+	    fn = fn.startsWith("/") ? fn : jsUrl_ + fn;
+	    fn = fn.endsWith(".js") ? fn : fn + ".js";
+	    return fn;
+	}
+	public String cssUrl() {return cssUrl_;};
+	public String cssUrl(String fn) {
+	    fn = fn.startsWith("/") ? fn : cssUrl_ + fn;
+	    fn = fn.endsWith(".css") ? fn : fn + ".css";
+	    return fn;
+	}
 	public boolean minimize() {return minimize_;}
 
 	private boolean addToList_(List<String> list, String name) {
@@ -59,17 +71,20 @@ public class SessionManager {
 	    addCss(Arrays.asList(name.split("[,;: ]")), media);
 	}
 
-	public void addJsLoaded(String name) {
-	    addJsLoaded(Arrays.asList(name.split("[,;: ]")));
+	public List<String> addJsLoaded(String name) {
+	    return addJsLoaded(Arrays.asList(name.split("[,;: ]")));
 	}
 	
-	public void addJsLoaded(Collection<String> loaded) {
+	public List<String> addJsLoaded(Collection<String> loaded) {
+	    List<String> l = new ArrayList<String>();
 	    for (String name: loaded) {
 	        jsGlobalLoaded_.add(name);
 	        if(jsLoaded_.add(name)) {
+	            l.add(name);
 	            jsMissing_.remove(name);
 	        }
 	    }
+	    return l;
 	}
 	
 	public void clearLoaded() {
@@ -112,7 +127,12 @@ public class SessionManager {
 	    return Arrays.asList(o.toString().split("[,;: ]"));
 	}
 	
-	public String gsDir() {
-	    return Minimizor.gsDir();
+	public String gsUrl() {
+	    return GreenScriptPlugin.getGsUrl();
+	}
+	
+	public String gsUrl(String fn) {
+	    //if (fn.startsWith("/")) return fn;
+	    return GreenScriptPlugin.getGsUrl() + fn;
 	}
 }

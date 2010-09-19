@@ -46,11 +46,16 @@ public class Configurator extends Controller {
         String cssDir = GreenScriptPlugin.getCssDir();
         String gsDir = GreenScriptPlugin.getGsDir();
         
+        // url settings
+        String jsUrl = GreenScriptPlugin.getJsUrl();
+        String cssUrl = GreenScriptPlugin.getCssUrl();
+        String gsUrl = GreenScriptPlugin.getGsUrl();
+        
         // minimizing toggles
         boolean minimize = GreenScriptPlugin.getMinimizeSetting();
         boolean compress = GreenScriptPlugin.getCompressSetting();
         boolean cache = GreenScriptPlugin.getCacheSetting();
-        render(conf, cssDeps, jsDeps, jsDir, cssDir, gsDir, minimize, compress, cache);
+        render(conf, cssDeps, jsDeps, jsDir, cssDir, gsDir, jsUrl, cssUrl, gsUrl, minimize, compress, cache);
     }
 
     public static void update(boolean minimize, boolean compress, boolean cache) {

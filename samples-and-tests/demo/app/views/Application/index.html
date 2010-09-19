@@ -48,7 +48,17 @@ Add Customer
 </form>
 
 #{greenscript.css 'datepicker' /}
-#{greenscript.js 'datepicker' /}
+*{
+    THIS IS AN ANTI-PATTERN
+    
+	Using 'load' is NOT encouraged, as it will output a <javascript> tag directly in place
+	thus cause additional http request from web browser.
+	
+	Further more it might cause problem of dependency management
+	
+	Here is the correct usage: #{greenscript.js 'datepicker'/}
+}*
+#{greenscript.js load: 'datepicker' /}
 <script type="text/javascript">
     var rule = ruleById('first_name');
     rule.add(Validate.Presence)
@@ -61,3 +71,4 @@ Add Customer
         new Control.DatePicker(el, {icon: '/public/images/calendar.png', locale: 'en_iso8601'});
     });
 </script>
+

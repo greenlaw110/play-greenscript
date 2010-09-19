@@ -12,5 +12,9 @@ public class Application extends Controller {
         flash.success("Information collected");
         render(params);
     }
+    
+    public static void singlePage() {
+        render();
+    }
 
 }              

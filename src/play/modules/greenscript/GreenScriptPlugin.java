@@ -47,6 +47,25 @@ public class GreenScriptPlugin extends PlayPlugin {
     public static String getGsDir() {
         return gsDir_;
     }
+    
+    /*
+     * The url settings
+     * - Read only after configured
+     * 
+     * By default url settings reuse dir settings
+     */
+    private static String jsUrl_ = jsDir_;
+    public static String getJsUrl() {
+        return jsUrl_;
+    }
+    private static String cssUrl_ = cssDir_;
+    public static String getCssUrl() {
+        return cssUrl_;
+    }
+    private static String gsUrl_ = gsDir_;
+    public static String getGsUrl() {
+        return gsUrl_;
+    }
 
     
     /*
@@ -86,21 +105,35 @@ public class GreenScriptPlugin extends PlayPlugin {
         Configuration cssConf = c.subset("css");
         DependencyManager.configDependencies(jsConf, cssConf);
 
+        /*
+         * Dir configuration
+         */
         jsDir_ = c.getString("greenscript.dir.js", "/public/javascripts/");
         if (!jsDir_.endsWith("/")) jsDir_ += "/";
         cssDir_ = c.getString("greenscript.dir.css", "/public/stylesheets/");
         if (!cssDir_.endsWith("/")) cssDir_ += "/";
         gsDir_ = c.getString("greenscript.dir.minimized", "/public/gs/");
         if (!gsDir_.endsWith("/")) gsDir_ += "/";
+        
+        /*
+         * URL configuration
+         */
+        jsUrl_ = c.getString("greenscript.url.js", jsDir_);
+        if (!jsUrl_.endsWith("/")) jsUrl_ += "/";
+        cssUrl_ = c.getString("greenscript.url.css", cssDir_);
+        if (!cssUrl_.endsWith("/")) cssUrl_ += "/";
+        gsUrl_ = c.getString("greenscript.url.minimized", gsDir_);
+        if (!gsUrl_.endsWith("/")) gsUrl_ += "/";
+        
         Minimizor.setGsDir(gsDir_);
 
-        minimize_ = c.getBoolean("greenscript.minimize", true);
+        minimize_ = c.getBoolean("greenscript.minimize", Play.mode == Mode.PROD);
         if (!minimize_)
             Logger.warn("GreenScript minimizing disabled");
         else
             Logger.info("GreenScript minimizing enabled");
 
-        boolean cache = Play.mode == Mode.DEV ? false : true;
+        boolean cache = Play.mode == Mode.PROD;
         if (c.containsKey("greenscript.cache")) {
             cache = c.getBoolean("greenscript.cache"); 
         } else if (c.containsKey("greenscript.nocache")) {
@@ -108,7 +141,7 @@ public class GreenScriptPlugin extends PlayPlugin {
         }
         Minimizor.setCacheSetting(cache);
 
-        boolean compress = c.getBoolean("greenscript.compress", true);
+        boolean compress = c.getBoolean("greenscript.compress", Play.mode == Mode.PROD);
         Minimizor.setCompressSetting(compress);
     }
 
@@ -121,7 +154,9 @@ public class GreenScriptPlugin extends PlayPlugin {
         try {
             c = new PropertiesConfiguration("greenscript.conf");
         } catch (ConfigurationException e) {
-            throw new UnexpectedException(e);
+            //throw new UnexpectedException(e);
+            // enable zero configuration
+            c = new PropertiesConfiguration();
         }
 
         // read application.conf
@@ -141,7 +176,7 @@ public class GreenScriptPlugin extends PlayPlugin {
 
     @Override
     public void beforeActionInvocation(Method actionMethod) {
-        Scope.RenderArgs.current().put("gsSM", new SessionManager(jsDir_, cssDir_, minimize_));
+        Scope.RenderArgs.current().put("gsSM", new SessionManager(jsUrl_, cssUrl_, minimize_));
     }
 
 }

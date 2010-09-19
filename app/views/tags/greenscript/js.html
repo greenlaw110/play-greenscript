@@ -19,38 +19,40 @@ if (_load) {
 
 if (!_charset) _charset='utf-8'
 
+if (!_loadAll) _loadAll = _loadMissing
+
 }%
 
 #{if (sm.minimize())}
 	%{
 		def fn = "";
 		if (_load) {
-			sm.addJsLoaded(_load)
-			fn = play.modules.greenscript.utils.Minimizor.minimizeJs(_load)
+			def l = sm.addJsLoaded(_load)
+			fn = play.modules.greenscript.utils.Minimizor.minimizeJs(l)
 		}
 	%}
     #{if (!fn.isEmpty())}
-        <script type="text/javascript" src="${sm.gsDir()}/${fn}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
+        <script type="text/javascript" src="${sm.gsUrl(fn)}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
     #{/if}
     %{sm.clearLoaded()}%
 
-    #{if _loadMissing != null}
+    #{if _loadAll}
         %{fn = play.modules.greenscript.utils.Minimizor.minimizeJs(sm.getJsMissings());}%
         #{if (!fn.isEmpty())}
-            <script type="text/javascript" src="${sm.gsDir()}/${fn}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
+            <script type="text/javascript" src="${sm.gsUrl(fn)}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
         #{/if}
     #{/if}
 #{/if}
 #{else}
-    #{list items:sm.asList(_load), as:'name'}
-        #{if (sm.addJsLoaded(name))}
-            <script type="text/javascript" src="${sm.jsDir()}/${name}.js" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
-        #{/if}
-    #{/list}
+	#{if _load}
+    	#{list items:sm.addJsLoaded(_load), as:'name'}
+        	<script type="text/javascript" src="${sm.jsUrl(name)}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
+    	#{/list}
+    #{/if}
     %{sm.clearLoaded()}%
-    #{if _loadMissing != null}
+    #{if _loadAll}
         #{list items:sm.getJsMissings(), as:'name'}
-            <script type="text/javascript" src="${sm.jsDir()}/${name}.js" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
+            <script type="text/javascript" src="${sm.jsUrl(name)}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
         #{/list}
     #{/if}
 #{/else}

@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                                       Application.index
+GET     /s										Application.singlePage
 
 POST    /post                                       Application.post
 
@@ -11,6 +12,8 @@ POST    /post                                       Application.post
 GET /public/ staticDir:public
 GET /js/ staticDir:public/javascripts
 GET /css/ staticDir:public/stylesheets
+GET /img/ staticDir:public/images
+GET /gs/ staticDir:public/gs
 
 # GreenScript
 GET /gs module:greenscript
