@@ -232,9 +232,9 @@ So what do you lost without any configuration?
 * Dependency management. Without dependencies infomation defined in <code>greenscript.conf</code> file, you are on your own to take care of js/css file dependencies. When you are declare a javascript or css file in a template, you should also make sure all its dependencies are explicitly declared before that scripts "IN PLACE"! If you failed to do that, you might get a lot of script/css errors in your final rendered html page.
 * Dir/URL path bound to play's default. With zero configration, you need to make sure your dir structure (the public) and route mapping of public dir strictly follow Play's convention. Otherwise GreenScript won't be able to locate the javascript/css files. 
 
-<p>As an example to demonstrate zero configuration, I put the ${play.path}/samples-and-tests/booking sample in the samples-and-tests dir of greenscript, makes the minimum changes to the templates and application.conf files.
+As an example to demonstrate zero configuration, I put the ${play.path}/samples-and-tests/booking sample in the samples-and-tests dir of greenscript, makes the minimum changes to the templates and application.conf files.
 
-<p>In conclusion, GreenScript is a flexible and powerful javascript/css management tool for your Play applicaiton development. You can use it in simple way (zero configuration) or in a way sophsicated enough to manage your complicated javascript and css dependencies.
+In conclusion, GreenScript is a flexible and powerful javascript/css management tool for your Play applicaiton development. You can use it in simple way (zero configuration) or in a way sophsicated enough to manage your complicated javascript and css dependencies.
 
 h2. <a>FAQ</a>
 
