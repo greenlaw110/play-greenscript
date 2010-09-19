@@ -1,0 +1,7 @@
+19 九月 2010 11:53:50,729 INFO  ~ Starting P:\play-greenscript\samples-and-tests\booking
+19 九月 2010 11:53:50,739 INFO  ~ Module greenscript is available (P:\play-greenscript\samples-and-tests\booking\..\..)
+19 九月 2010 11:53:50,857 INFO  ~ 
+19 九月 2010 11:53:50,858 INFO  ~ Go to http://localhost:9000/@tests to run the tests
+19 九月 2010 11:53:50,859 INFO  ~ 
+19 九月 2010 11:53:50,861 WARN  ~ You're running Play! in DEV mode
+19 九月 2010 11:53:50,985 INFO  ~ Listening for HTTP on port 9000 (Waiting a first request to start) ...
