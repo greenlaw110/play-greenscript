@@ -256,3 +256,7 @@ You can use GreenScript with zero configuration. However, it's suggested to crea
 h3. I want to debug javascript, can GreenScript output uncompressed version of javascript/css files?
 
 Yes, put "greenscript.minimize=false" in your application.conf file. Actually the setting is turned off by default when you are running app in "dev" mode. An nice feature you can use is dynamic configuration which enable you turn on/off minimizing/compressing without restart your app. See <a href="#dyna-conf">Configuration at runtime</a> section for detail
+
+h3. Why don't you use GreenScript in the dynamic configuration feature?
+
+Well, I have no idea how you will configure the dir/url path settings, so I have to hard code my javascript/css links in my template. Fortunately it's not a big work for a simple page web app ;-)
