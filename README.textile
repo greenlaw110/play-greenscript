@@ -247,11 +247,12 @@ bc. #{greenscript.css "css files separated by blank", output:true/}
 
 h3. Do I need to surround #{greenscript } tag with #{set 'moreStyles'} in my other templates?
 
-** No, you just use #{greenscript.css '...' /} to declare your css files. With greenscript, you can say 'byebye' to 'moreStyles' and 'moreScripts'.
+No, you just use #{greenscript.css '...' /} to declare your css files. With greenscript, you can say 'byebye' to 'moreStyles' and 'moreScripts'.
 
 h3. How to use GreenScript? Is it hard to configure?
 
-** You can use GreenScript with zero configuration. However, it's suggested to create "greenscript.conf" file to describe your javascript and css file dependancies. You will love this feature because you just need to declare explicitly used javascript/css files in your templates, leave the dependencies to GreenScript.
+You can use GreenScript with zero configuration. However, it's suggested to create "greenscript.conf" file to describe your javascript and css file dependancies. You will love this feature because you just need to declare explicitly used javascript/css files in your templates, leave the dependencies to GreenScript.
 
-* I want to debug javascript, can GreenScript output uncompressed version of javascript/css files?
-** Yes, put "greenscript.minimize=false" in your application.conf file. Actually the setting is turned off by default when you are running app in "dev" mode. An nice feature you can use is dynamic configuration which enable you turn on/off minimizing/compressing without restart your app. See <a href="#dyna-conf">Configuration at runtime</a> section for detail
+h3. I want to debug javascript, can GreenScript output uncompressed version of javascript/css files?
+
+Yes, put "greenscript.minimize=false" in your application.conf file. Actually the setting is turned off by default when you are running app in "dev" mode. An nice feature you can use is dynamic configuration which enable you turn on/off minimizing/compressing without restart your app. See <a href="#dyna-conf">Configuration at runtime</a> section for detail
