@@ -149,13 +149,13 @@ p. Yes! that's it. I know you might have some questions, don't worry. Let me unv
 * Where is my "jquery-1.4.2.min.js" ?
 ** When you put "loadAll: true" in #{greenscript.js} tag, it will output all unloaded js dependency files as well as the default js file you've defined in <code>greenscript.conf</code>. I am sure jquery-1.4.2.min.js will be reached by either of the 2 lookup paths, otherwise, I assume you will not need that file. For perfectionist, here is how to load the file anyway: <code>#{greenscript.js "jquery-1.4.2.min.js", output: true/}</code>
 * How can I get "moreStyles" and "moreScripts"?
-** You get them automatically when you have "output: true" for #{greenscript.css} or "loadAll: true" for #{greenscript.js}. The assumption is you have tell GreenScript that you need them in other places. I will let you know how to do that later at next section.
+** You get them automatically when you have "output: true" for #{greenscript.css} or "loadAll: true" for #{greenscript.js}. The assumption is you have told GreenScript that you need them in other places. I will let you know how to do that later at next section.
 * Why do you use "output" for css while "loadAll" for js? 
 ** Please don't ask this question now, there are subtile reasons which I would like to discuss with you once you are an expert level GreenScript user.
 
 h4. <a>Other templates</a>
 
-p. The differences of using GreenScript tag in other templates and the "main.html" is that ususally you don't "output" javascript or css files in your other templates, instead, you declare you need them. Here is a sample (found in ${play.path}/samples-and-tests/booking/app/views/Hotels/book.html) of how to declare javascripts and css when you don't have GreenScript:
+p. The differences of using GreenScript tag in other templates and in the "main.html" is that ususally you don't "output" javascript or css files in your other templates, instead, you declare them (for the template usage). Here is a sample (found in ${play.path}/samples-and-tests/booking/app/views/Hotels/book.html) of how to declare javascripts and css when you don't have GreenScript:
 
 bc. #{set 'moreScripts'}
     <script src="@{'/public/javascripts/jquery-ui-1.7.2.custom.min.js'}" type="text/javascript" charset="utf-8"></script>
@@ -169,31 +169,32 @@ p. And see how you do with GreenScript available:
 bc. #{greenscript.js "jquery-ui-1.7.2.custom.min" /}
 #{greenscript.css "/public/ui-lightness/jquery-ui-1.7.2.custom" /}
 
-p. Easy, right? You might noticed that I have put the full path for the css file in this case. This is needed because the file is not in the default stylesheet file folder (configured with <code>greenscript.dir.css</code>, which default to /public/stylesheets).
+p. Easy, right? You might noticed that I have put the full path for the css file in this case. This is needed because the file is not in the default stylesheet file folder (configured with <code>greenscript.dir.css</code>, which default to <code>/public/stylesheets</code>).
 
 h3. <a id="dyna-conf">Configuration at runtime</a>
 
-p. The beautiful feature enable app developer to turn on/off minimizing dynamically and could be very helpful when you need to debug your javascript/css. In order to use the feature, you will need to add an entry in your route file to map a url request to the controllers.greenscript.Configurator actions:
+p. This beautiful feature enable app developer to turn on/off minimizing dynamically and could be very helpful when you need to debug your javascript/css. In order to use the feature, you will need to add an entry in your route file to map a url request to the controllers.greenscript.Configurator actions, for example:
 
 bc. # Enable GreenScript dynamic configuration
 GET /gs module:greenscript
 
-p. Once you have done that, you can reach the configuration page by typing "http://localhost:9000/gs" in the address bar of your favorite browser. The configuration is designed to be self guided and you won't lost yourself there. Please be noted that runtime configuration will not be flushed to your configuration file. When you restart your app all the configurations you've made during last session are lost. Meaning if you want to change a configuration permanently, you must update your application.conf file. See <a href="#configuration">Configuration</a> section for detail.
+p. Once you have done with that, you can reach the configuration page by typing <code>http://localhost:9000/gs</code> in the address bar of your favorite browser. The configuration is designed to be self guided and you won't lost yourself there. Please be noted that <em>runtime configuration will not be flushed to your configuration file</em>. When you restart your app all the configurations you've made during last session are lost. Meaning if you want to change a configuration permanently, you must update your application.conf file. See <a href="#configuration">Configuration</a> section for detail.
 
+h4. <a>About Security</a>
 p. There is no integrated security to access the configuration page. And here is my 2 cents on how to secury your GreenScript dynamic configuration access:
 
 * Option 1: Remove the url mapping entry in your route file in a prod environment
-* Option 2: If you are a real hack and reject any manual operations, you will probably implement your own controller extends (or @With) controllers.greenscript.Configurator, and then add security to your controller. You will need to copy the configurator templates to your views folder. Don't worry, GreenScript provides command to help you with that. I will get there soon.
+* Option 2: If you are a real hack and reject any manual operations, you will probably implement your own controller extends (or @With) controllers.greenscript.Configurator, and then add security to your controller. You will need to copy the configurator templates to your views folder. Don't worry, GreenScript provides command to help you with that. I will get there now.
 
 h3. <a>Module command</a>
 
-p. I just told you that you can use command to copy the greenscript Configurator.configure.html template file to your app folder. Here is how to do it. First make sure you have enabled greenscript in your application.conf file. And then go to the console, enter your app root dir, and type:
+p. I've just told you that you can use command to copy the greenscript Configurator.configure.html template file to your app folder. Here is how to do it. First make sure you have enabled greenscript in your application.conf file. And then go to the console, enter your app root dir, and type:
 
 bc. play greenscript:cp -t MyGSConfigurator
 
 The template file will be ready in {your-app-root}/app/views/MyGSConfigurator folder. Obviously your controller should be named MyGSConfigurator. It probably should looks like:
 
-bc. package controllers;
+<pre><code> package controllers;
 
 import play.mvc.*;
 
@@ -201,6 +202,7 @@ import play.mvc.*;
 @Secure(role='developer,admin')
 public class MyGSConfigurator extends Controller {
 }
+</code></pre>
 
 h3. <a>Keep it secret!</a>
 
@@ -221,7 +223,14 @@ p. How do you expect anything more simpler than this?
 
 h3. <a>Zero configuration</a>
 
-<p>GreenScript plugin now support zero configuration. It means besides enabling it in your application.conf, you don't need to do any configurations, you don't even need to create "greenscript.conf" file in your conf dir. But what do you get if you don't do any configuration? Well basically you can still benefit from the brief greenscript tag syntax, you are free to use all the knowledges you've learned from <a href="#using-tags">Using Tags</a> section. You can also benefit from minimizing/compressing/cache, you can also use the dynamic configuration controller. The only thing you need to take care is your dependencies. When you are declare a javascript or css file in a template, you should also make sure all its dependencies are explicitly declared before that scripts "IN PLACE"! If you failed to do that, you might get a lot of script/css errors in your final rendered html page.
+GreenScript plugin now support zero configuration. It means besides enabling it in your application.conf, you don't need to do any configuration to use it, you don't even need to create "greenscript.conf" file in your conf dir. But what do you get if you don't do any configuration? Well basically you can still benefit from GreenScript with zero configuration:
+* The tags. You are free to utilize all the knowledges you've learned from <a href="#using-tags">Using Tags</a> section. 
+* Minimize/compress. You can also benefit from minimizing/compressing/cache capability of GreenScript.
+* Dynamic configuration. You can also use the dynamic configuration controller. 
+
+So what do you lost without any configuration?
+* Dependency management. Without dependencies infomation defined in <code>greenscript.conf</code> file, you are on your own to take care of js/css file dependencies. When you are declare a javascript or css file in a template, you should also make sure all its dependencies are explicitly declared before that scripts "IN PLACE"! If you failed to do that, you might get a lot of script/css errors in your final rendered html page.
+* Dir/URL path bound to play's default. With zero configration, you need to make sure your dir structure (the public) and route mapping of public dir strictly follow Play's convention. Otherwise GreenScript won't be able to locate the javascript/css files. 
 
 <p>As an example to demonstrate zero configuration, I put the ${play.path}/samples-and-tests/booking sample in the samples-and-tests dir of greenscript, makes the minimum changes to the templates and application.conf files.
 
@@ -229,16 +238,16 @@ h3. <a>Zero configuration</a>
 
 h2. <a>FAQ</a>
 
-* I found there is no javascript and css links at all in my html file rendered out!!
-** Make sure you have add the following lines in your main.html (or in any other name) template:
+p. I found there is no javascript and css links at all in my html file rendered out!!
+* Make sure you have add the following lines in your main.html (or in any other name) template:
 
 bc. #{greenscript.css "css files separated by blank", output:true/}
 #{greenscript.js loadAll:true/}
 
-* Do I need to surround #{greenscript } tag with #{set 'moreStyles'} in my other templates?
+p. Do I need to surround #{greenscript } tag with #{set 'moreStyles'} in my other templates?
 ** No, you just use #{greenscript.css '...' /} to declare your css files. With greenscript, you can say 'byebye' to 'moreStyles' and 'moreScripts'.
 
-* How to use GreenScript? Is it hard to configure?
+p. How to use GreenScript? Is it hard to configure?
 ** You can use GreenScript with zero configuration. However, it's suggested to create "greenscript.conf" file to describe your javascript and css file dependancies. You will love this feature because you just need to declare explicitly used javascript/css files in your templates, leave the dependencies to GreenScript.
 
 * I want to debug javascript, can GreenScript output uncompressed version of javascript/css files?
