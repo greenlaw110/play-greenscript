@@ -13,8 +13,15 @@
 
 #{if (_output)}
     #{if (sm.minimize())}
-        %{def fn = play.modules.greenscript.utils.Minimizor.minimizeCss(sm.getCssList(_media));}%
+        %{
+        	def l = sm.getCssList(_media)
+        	def fn = play.modules.greenscript.utils.Minimizor.minimizeCss(l);
+        	def cdn = sm.getCdnItems(l)
+        }%
         <link rel="stylesheet" type="text/css" media="${_media?:'all'}" href="${sm.gsUrl(fn)}">
+        #{list items:cdn, as: '_'}
+        	<link rel="stylesheet" type="text/css" media="${_media?:'all'}" href="${_}">
+        #{/list}
     #{/if}
     #{else}
         #{list items:sm.getCssList(_media), as:'name'}

@@ -4,6 +4,10 @@
 Add Customer
 #{/set}
 
+*{test CDN}*
+#{greenscript.js 'http://www.google.com/jsapi http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js' /}
+#{greenscript.css 'http://xyz.com/x.css' /}
+
 <form action="/post" method="post">
     <div class="fields">
         <div>
@@ -51,7 +55,7 @@ Add Customer
 *{
     THIS IS AN ANTI-PATTERN
     
-	Using 'load' is NOT encouraged, as it will output a <javascript> tag directly in place
+	Using 'load' is NOT encouraged, as it will output a "javascript" tag directly in place
 	thus cause additional http request from web browser.
 	
 	Further more it might cause problem of dependency management

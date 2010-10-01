@@ -8,7 +8,7 @@ def sm = caller.gsSM
 def a = _import
 if (!a) a = _require
 
-if (!(a || _load || _loadMissing)) throw new RuntimeException("either load or import statement needed");
+if (!(a || _load || _loadMissing || _loadAll)) throw new RuntimeException("either load or import statement needed");
 
 if (a) sm.addJsMissings(a);
 
@@ -25,22 +25,37 @@ if (!_loadAll) _loadAll = _loadMissing
 
 #{if (sm.minimize())}
 	%{
-		def fn = "";
+		def fn = "", l = null, cdn = null;
 		if (_load) {
-			def l = sm.addJsLoaded(_load)
+			l = sm.addJsLoaded(_load)
 			fn = play.modules.greenscript.utils.Minimizor.minimizeJs(l)
+			cdn = sm.getCdnItems(l)
 		}
 	%}
     #{if (!fn.isEmpty())}
         <script type="text/javascript" src="${sm.gsUrl(fn)}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
     #{/if}
+    #{if (cdn != null && !cdn.isEmpty()) }
+	    #{list items:cdn, as: '_'}
+	    	<script type="text/javascript" src="${_}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
+	    #{/list}
+    #{/if}
     %{sm.clearLoaded()}%
 
     #{if _loadAll}
-        %{fn = play.modules.greenscript.utils.Minimizor.minimizeJs(sm.getJsMissings());}%
+        %{
+        	l = sm.getJsMissings()
+        	fn = play.modules.greenscript.utils.Minimizor.minimizeJs(l);
+        	cdn = sm.getCdnItems(l)
+        }%
         #{if (!fn.isEmpty())}
             <script type="text/javascript" src="${sm.gsUrl(fn)}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
         #{/if}
+	    #{if (cdn != null && !cdn.isEmpty()) }
+		    #{list items: cdn, as: '_'}
+		    	<script type="text/javascript" src="${_}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
+		    #{/list}
+	    #{/if}
     #{/if}
 #{/if}
 #{else}

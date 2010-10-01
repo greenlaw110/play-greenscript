@@ -1,12 +1,10 @@
 package controllers.greenscript;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
 
 import play.modules.greenscript.GreenScriptPlugin;
 import play.mvc.Controller;

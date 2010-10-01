@@ -58,7 +58,7 @@ public class Minimizor {
 	
 	public static String minimizeJs(String jsNames) {
 	    if (null == jsNames) return "";
-	    return minimizeJs(Arrays.asList(jsNames.split("[,;: ]")));
+	    return minimizeJs(Arrays.asList(jsNames.split("[,; ]")));
 	}
 
 	public static String minimizeJs(List<String> jsNames) {
@@ -158,6 +158,7 @@ public class Minimizor {
 	private static void compressJs_(String fn, Writer out) {
 	    try {
     		Logger.debug("minizing... %1$s.js", fn);
+    		if (fn.startsWith("http")) return; // skip CDN 
     		fn = fn.startsWith("/") ? fn : getJsPath_() + fn;
     		fn = fn.endsWith(".js") ? fn : fn + ".js";
     		File inFile = Play.getFile(fn);
@@ -190,6 +191,7 @@ public class Minimizor {
 	private static void compressCss_(String fn, Writer out) {
 	    try {
     		Logger.debug("minizing... %1$s.css", fn);
+    		if (fn.startsWith("http")) return; // skip CDN
     		fn = fn.startsWith("/") ? fn : getCssPath_() + fn;
     		fn = fn.endsWith(".css") ? fn : fn + ".css";
     		File inFile = Play.getFile(fn);

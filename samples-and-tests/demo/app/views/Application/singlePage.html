@@ -8,6 +8,8 @@ docTitle = get('title') ?: 'GreenScript Demo Application - Single Page Template'
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         #{greenscript.css 'layout color form livevalidation datepicker', output:true/}
         <link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
+		*{text CDN }*
+		#{greenscript.js load:'http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js.uncompressed.js' /}
         #{greenscript.js 'livevalidation pMask datepicker', loadAll:true /}
         <script type="text/javascript">
 		var rules = new Hash();

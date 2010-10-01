@@ -168,7 +168,7 @@ public class DependencyManager {
     
     public List<String> comprehend(String listAsStr, boolean withDefaults) {
         if (null == listAsStr) listAsStr = "";
-        return comprehend(Arrays.asList(listAsStr.split("[,;: ]")), withDefaults);
+        return comprehend(Arrays.asList(listAsStr.split("[,; ]")), withDefaults);
     }
 
     public List<String> comprehend(Collection<String> set) {

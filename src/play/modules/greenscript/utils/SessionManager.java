@@ -30,12 +30,14 @@ public class SessionManager {
 
 	public String jsUrl() {return jsUrl_;}
 	public String jsUrl(String fn) {
+	    if (fn.startsWith("http")) return fn;
 	    fn = fn.startsWith("/") ? fn : jsUrl_ + fn;
 	    fn = fn.endsWith(".js") ? fn : fn + ".js";
 	    return fn;
 	}
 	public String cssUrl() {return cssUrl_;};
 	public String cssUrl(String fn) {
+	    if (fn.startsWith("http")) return fn;
 	    fn = fn.startsWith("/") ? fn : cssUrl_ + fn;
 	    fn = fn.endsWith(".css") ? fn : fn + ".css";
 	    return fn;
@@ -68,11 +70,11 @@ public class SessionManager {
 
 	public void addCss(String name, String media) {
 	    if (null == name) return;
-	    addCss(Arrays.asList(name.split("[,;: ]")), media);
+	    addCss(Arrays.asList(name.split("[,; ]")), media);
 	}
 
 	public List<String> addJsLoaded(String name) {
-	    return addJsLoaded(Arrays.asList(name.split("[,;: ]")));
+	    return addJsLoaded(Arrays.asList(name.split("[,; ]")));
 	}
 	
 	public List<String> addJsLoaded(Collection<String> loaded) {
@@ -99,7 +101,7 @@ public class SessionManager {
 	
 	public void addJsMissings(String name) {
 	    if (null == name) return;
-	    addJsMissings(Arrays.asList(name.split("[,;: ]")));
+	    addJsMissings(Arrays.asList(name.split("[,; ]")));
 	}
 
 	public List<String> getJsMissings() {
@@ -124,7 +126,7 @@ public class SessionManager {
 	    if (o instanceof Collection) {
 	        return (Collection<String>)o;
 	    }
-	    return Arrays.asList(o.toString().split("[,;: ]"));
+	    return Arrays.asList(o.toString().split("[,; ]"));
 	}
 	
 	public String gsUrl() {
@@ -134,5 +136,13 @@ public class SessionManager {
 	public String gsUrl(String fn) {
 	    //if (fn.startsWith("/")) return fn;
 	    return GreenScriptPlugin.getGsUrl() + fn;
+	}
+	
+	public List<String> getCdnItems(Collection<String> list) {
+	    List<String> l = new ArrayList<String>();
+	    for (String s: list) {
+	        if (s.startsWith("http")) l.add(s);
+	    }
+	    return l;
 	}
 }
