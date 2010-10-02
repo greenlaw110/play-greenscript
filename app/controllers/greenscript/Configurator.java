@@ -64,4 +64,11 @@ public class Configurator extends Controller {
         flash.keep();
         configure();
     }
+    
+    public static void reloadDependencies() {
+        GreenScriptPlugin.getInstance().reloadDependency();
+        flash.success("Dependency configure reloaded");
+        flash.keep();
+        configure();
+    }
 }

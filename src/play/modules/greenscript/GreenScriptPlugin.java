@@ -1,6 +1,9 @@
 package play.modules.greenscript;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -10,7 +13,6 @@ import play.Logger;
 import play.Play;
 import play.Play.Mode;
 import play.PlayPlugin;
-import play.exceptions.UnexpectedException;
 import play.modules.greenscript.utils.DependencyManager;
 import play.modules.greenscript.utils.Minimizor;
 import play.modules.greenscript.utils.SessionManager;
@@ -99,7 +101,7 @@ public class GreenScriptPlugin extends PlayPlugin {
     public Configuration getConfiguration() {
         return conf_;
     }
-
+    
     private void configure_(Configuration c) {
         Configuration jsConf = c.subset("js");
         Configuration cssConf = c.subset("css");
@@ -143,6 +145,37 @@ public class GreenScriptPlugin extends PlayPlugin {
 
         boolean compress = c.getBoolean("greenscript.compress", Play.mode == Mode.PROD);
         Minimizor.setCompressSetting(compress);
+    }
+    
+    public void reloadDependency() {
+        // rebuild dependencies
+        PropertiesConfiguration c = null;
+        try {
+            c = new PropertiesConfiguration("greenscript.conf");
+        } catch (ConfigurationException e) {
+            //throw new UnexpectedException(e);
+            // enable zero configuration
+            c = new PropertiesConfiguration();
+        }
+        Configuration jsConf = c.subset("js");
+        Configuration cssConf = c.subset("css");
+        DependencyManager.configDependencies(jsConf, cssConf);
+        
+        // refresh configuration (for the sake of web configurator presentation purpose)
+        List<String> toBeRemoved = new ArrayList<String>();
+        for (Iterator<?> itr = conf_.getKeys("js"); itr.hasNext(); ) {
+            toBeRemoved.add((String)itr.next());
+        }
+        for (Iterator<?> itr = conf_.getKeys("css"); itr.hasNext(); ) {
+            toBeRemoved.add((String)itr.next());
+        }
+        for (String s: toBeRemoved) {
+            conf_.clearProperty(s);
+        }
+        for (Iterator<?> itr = c.getKeys(); itr.hasNext();) {
+            String key = (String)itr.next();
+            conf_.addProperty(key, c.getProperty(key));
+        }
     }
 
     @Override

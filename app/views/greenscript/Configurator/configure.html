@@ -126,28 +126,31 @@
 	        		<p>This part shows the css and javascript dependency relationships defined in your
 	        		   <code>greenscript.conf</code> file. <em>Note, this part is read only!</em> You should update
 	        		   your <code>greenscript.conf</code> file and restart the server to apply your changes.</p>
-	        		<div id="acc-deps">
-	        			<h3><a href="#">CSS dependencies</a></h3>
-	        			<div>
-	        				<ul class="deps">
-	        					#{list items:cssDeps, as: 'row'}
-	        					<li class="row_parity">
-	        						${row}
-	        					</li>
-	        					#{/list}
-	        				</ul>
-	        			</div>
-	        			<h3><a href="#">JavaScript dependencies</a></h3>
-	        			<div>
-	        				<ul class="deps">
-	        					#{list items:jsDeps, as: 'row'}
-	        					<li class="row_parity">
-	        						${row}
-	        					</li>
-	        					#{/list}
-	        				</ul>
-	        			</div>
-	        		</div>
+        			<h3><a href="#">CSS dependencies</a></h3>
+        			<div>
+        				<ul class="deps">
+        					#{list items:cssDeps, as: 'row'}
+        					<li class="row_parity">
+        						${row}
+        					</li>
+        					#{/list}
+        				</ul>
+        			</div>
+        			<h3><a href="#">JavaScript dependencies</a></h3>
+        			<div>
+        				<ul class="deps">
+        					#{list items:jsDeps, as: 'row'}
+        					<li class="row_parity">
+        						${row}
+        					</li>
+        					#{/list}
+        				</ul>
+        			</div>
+        			<p>
+        				<form action="@{reloadDependencies()}" method="post">
+        					<input type="submit" value="reload" title="reload dependency configuration"/>
+        				</form>
+        			</p>
 	        	</div>
 	        </div>
 	    </div>
