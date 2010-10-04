@@ -8,7 +8,7 @@
     def caller = _caller
     while (caller._caller) caller = caller._caller
     def sm = caller.gsSM
-    sm.addCss(a, _media)
+    if (a) sm.addCss(a, _media)
 }%
 
 #{if (_output)}
