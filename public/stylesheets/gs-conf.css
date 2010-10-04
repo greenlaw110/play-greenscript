@@ -22,3 +22,6 @@ ul.deps {
 	max-height: 240px;
 	overflow: auto;
 }
+#main > .header {
+	margin-top: 1em;
+}

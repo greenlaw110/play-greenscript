@@ -178,18 +178,28 @@ public class DependencyManager {
     public List<String> comprehend(Collection<String> set, boolean withDefaults) {
         if (null == set) set = Collections.emptySet();
         List<String> ret = new ArrayList<String>();
+
+        // defaults nodes go first
+        SortedSet<Node> defs = new TreeSet<Node>();
+        if (withDefaults) {
+            defs = new TreeSet<Node>();
+            defs.addAll(allDepends_("default"));
+            for (Node n : defs) ret.add(n.name);
+        }
+        
+        // non-defaults
         SortedSet<Node> nodes = new TreeSet<Node>();
         for (String s : set) {
-            nodes.addAll(allDepends_(s));
-        }
-        if (withDefaults) {
-            nodes.addAll(allDepends_("default"));
+            Set<Node> s0 = allDepends_(s);
+            s0.removeAll(defs);
+            nodes.addAll(s0);
         }
         for (Node n : nodes) {
             ret.add(n.name);
         }
+        
         /*
-         * add the orginal collection again in case some element in the original
+         * add the original collection again in case some element in the original
          * collection has not been defined in the dependency list
          */
         for (String s : set) {
