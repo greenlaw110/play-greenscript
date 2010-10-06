@@ -2,8 +2,12 @@ h1. GreenScript module
 
 The GreenScript module help you to manage javascript and CSS dependencies and do minimizing work in the same time.
 
-h2. <a>What's New for v1.1a</a>
+h2. <a>What's New for v1.1c</a>
 
+* greenscript.compress and greenscript.cache now default to true without regarding to the Play mode
+* Unused compressed files in "gs" folder get cleaned
+* Notice in configuration html page and demo application.conf file about greenscript.compress|cache option
+* Fix bug in css.html tag: NPE encountered when trying to output without argument or "load/import"
 * Add support to CDN
 * Support reload dependency configuration at runtime
 

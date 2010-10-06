@@ -116,6 +116,8 @@ public class GreenScriptPlugin extends PlayPlugin {
         if (!cssDir_.endsWith("/")) cssDir_ += "/";
         gsDir_ = c.getString("greenscript.dir.minimized", "/public/gs/");
         if (!gsDir_.endsWith("/")) gsDir_ += "/";
+        Minimizor.setGsDir(gsDir_);
+
         
         /*
          * URL configuration
@@ -127,15 +129,15 @@ public class GreenScriptPlugin extends PlayPlugin {
         gsUrl_ = c.getString("greenscript.url.minimized", gsDir_);
         if (!gsUrl_.endsWith("/")) gsUrl_ += "/";
         
-        Minimizor.setGsDir(gsDir_);
-
         minimize_ = c.getBoolean("greenscript.minimize", Play.mode == Mode.PROD);
         if (!minimize_)
             Logger.warn("GreenScript minimizing disabled");
         else
             Logger.info("GreenScript minimizing enabled");
 
-        boolean cache = Play.mode == Mode.PROD;
+        // it is recommended that cache always be true
+        // use minimize to turn on/off cache/compress/merge in all
+        boolean cache = true;
         if (c.containsKey("greenscript.cache")) {
             cache = c.getBoolean("greenscript.cache"); 
         } else if (c.containsKey("greenscript.nocache")) {
@@ -143,7 +145,9 @@ public class GreenScriptPlugin extends PlayPlugin {
         }
         Minimizor.setCacheSetting(cache);
 
-        boolean compress = c.getBoolean("greenscript.compress", Play.mode == Mode.PROD);
+        // it is recommended that compress always be true
+        // use minimize to turn on/off cache/compress/merge in all
+        boolean compress = c.getBoolean("greenscript.compress", true);
         Minimizor.setCompressSetting(compress);
     }
     

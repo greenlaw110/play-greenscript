@@ -34,7 +34,7 @@
     	#{/if}
     	<div id="main" class="container">
     		<div class="span-24 last header">
-        		<h1><a href="http://github.com/greenlaw110/play-greenscript" style="text-decoration:none;color:black">GreenScript Configuration</a></h1>
+        		<h1><a href="http://github.com/greenlaw110/play-greenscript" style="text-decoration:none;color:black">GreenScript Configuration v1.1c</a></h1>
         	</div>
 	        <div id="tabs" class="span-24 last">
 	        	<ul>
@@ -67,7 +67,8 @@
 		        				<label for="compress">Compressing </label>
 	        					<span class="info">
 	        						If compressing is enabled, your js/css files will be compressed (remove unnessessary 
-	        						blacks, comments, etc)
+	        						blacks, comments, etc). <b>it is recommended to leave this option turned on</b> as you
+	        						can turn off "Minimizing" to disable compressing.
 	        					</span><br/>
 		        				<input type="checkbox" name="compress" value="true" #{if compress}checked="checked"#{/if}/>Compress
 		        				<input type="hidden" name="compress" value="false"/>
@@ -75,7 +76,11 @@
 		        			<p>
 	        					<label for="cache">Cache </label>
 	        					<span class="info">
-	        						If cache is enabled, the compressed version of your css/js files will be reused
+	        						If cache is enabled, the compressed version of your css/js files will be reused. <b>It is 
+	        						recommended to leave this option turned on</b> as you can turn off "Minimizing" to disable
+	        						cache. <span style="color: red; text-weight:bold">It is highly discouraged to leave this
+	        						option turn off while Minimizing turned on in a production environment</span>, your client
+	        						will probably encounter 404 error if you do so!
 	        					</span><br/>
 		        				<input type="checkbox" name="cache" value="true" #{if cache}checked="checked"#{/if}/>Cache
 		        				<input type="hidden" name="cache" value="false"/>
@@ -153,7 +158,7 @@
         			</p>
 	        	</div>
 	        </div>
-		    <div style="text-align:center;padding-top:10px"><b>GreenScript Configurator v1.1b</b> by <a href="mail:greenlaw110@gmail.com">greenlaw110@gmail.com</a></div>
+		    <div style="text-align:center;padding-top:10px"><b>GreenScript Configurator v1.1c</b> by <a href="mail:greenlaw110@gmail.com">greenlaw110@gmail.com</a></div>
 	    </div>
     </body>
 </html>
