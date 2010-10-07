@@ -18,10 +18,10 @@
         	def fn = play.modules.greenscript.utils.Minimizor.minimizeCss(l);
         	def cdn = sm.getCdnItems(l)
         }%
-        <link rel="stylesheet" type="text/css" media="${_media?:'all'}" href="${sm.gsUrl(fn)}">
         #{list items:cdn, as: '_'}
         	<link rel="stylesheet" type="text/css" media="${_media?:'all'}" href="${_}">
         #{/list}
+        <link rel="stylesheet" type="text/css" media="${_media?:'all'}" href="${sm.gsUrl(fn)}">
     #{/if}
     #{else}
         #{list items:sm.getCssList(_media), as:'name'}

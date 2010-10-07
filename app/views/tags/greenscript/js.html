@@ -32,13 +32,13 @@ if (!_loadAll) _loadAll = _loadMissing
 			cdn = sm.getCdnItems(l)
 		}
 	%}
+    #{if (cdn != null && !cdn.isEmpty()) }
+        #{list items:cdn, as: '_'}
+            <script type="text/javascript" src="${_}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
+        #{/list}
+    #{/if}
     #{if (!fn.isEmpty())}
         <script type="text/javascript" src="${sm.gsUrl(fn)}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
-    #{/if}
-    #{if (cdn != null && !cdn.isEmpty()) }
-	    #{list items:cdn, as: '_'}
-	    	<script type="text/javascript" src="${_}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
-	    #{/list}
     #{/if}
     %{sm.clearLoaded()}%
 
@@ -48,14 +48,14 @@ if (!_loadAll) _loadAll = _loadMissing
         	fn = play.modules.greenscript.utils.Minimizor.minimizeJs(l);
         	cdn = sm.getCdnItems(l)
         }%
+        #{if (cdn != null && !cdn.isEmpty()) }
+            #{list items: cdn, as: '_'}
+                <script type="text/javascript" src="${_}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
+            #{/list}
+        #{/if}
         #{if (!fn.isEmpty())}
             <script type="text/javascript" src="${sm.gsUrl(fn)}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
         #{/if}
-	    #{if (cdn != null && !cdn.isEmpty()) }
-		    #{list items: cdn, as: '_'}
-		    	<script type="text/javascript" src="${_}" #{if _id} id="${_id}"#{/if} charset="${_charset}"></script>
-		    #{/list}
-	    #{/if}
     #{/if}
 #{/if}
 #{else}
